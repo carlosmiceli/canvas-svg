@@ -1,0 +1,61 @@
+.container {
+    min-height: 100vh;
+    min-width: 100vw;
+    display: flex;
+}
+
+.sidebar {
+    width: 25%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px 10px;
+    overflow-x: scroll;
+}
+
+.arrowSidebar {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.searchSidebar {
+    margin: 0 auto;
+    width: 75%;
+    display: flex;
+    justify-content: center;
+}
+
+.categories {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px 10px;
+    overflow-x: scroll;
+}
+
+.svgs {
+    width: 70%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px 10px;
+    overflow-x: scroll;
+}
+
+.canvasBox {
+    width: 75%;
+    background-color: #F8F3F1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.canvas {
+    width: 50%;
+    height: 40%;
+    background-color: white;
+}
