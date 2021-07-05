@@ -1,4 +1,5 @@
 import styles from '../styles/Canvas.module.css'
+import Categories from '../components/categories/categories'
 import { TextField, IconButton, InputAdornment } from "@material-ui/core/"
 import SearchIcon from '@material-ui/icons/Search';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
@@ -26,12 +27,10 @@ export default function Sidebar() {
                 }}
                 />
             </div>
-            <div className={styles.categories}>
-                
-            </div>
-            <div className={styles.svgs}>
+            <Categories />
+            {/* <div className={styles.svgs}>
 
-            </div>
+            </div> */}
         </div>
     )
 
