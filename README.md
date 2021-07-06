@@ -38,3 +38,9 @@
 - Started building canvas layout.
 - Had to spend some time dusting off some React/CSS concepts.
 - At this moment, my idea is to complete the layout/styling of everything first, which should be the easiest part, and then jump into 1) learning properly about routes and apis in NextJS, 2) learn about svgs cods and all the asset manipulation (drag, reshape, etc.), 3) implement state persistance if user closes/opens app again, and finally 4) download the file.
+
+### Day 3
+
+- Built basic layout for Canvas page and sidebar, along with placeholders for mapping the SVG files and categories.
+- Added a "More" functionality to expand categories if needed.
+- Installed React Konva, tried quite a bit to make SVG files work with it but couldn't quite grasp the documentation for Konva's Path...
