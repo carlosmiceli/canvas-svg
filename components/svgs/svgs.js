@@ -27,9 +27,6 @@ export default function Svgs() {
         setSvgs(svgData)
     }, [])
 
-    
-    // console.log(svgs)
-
     // var stage = new Konva.Stage({
     //     container: 'container',
     //     width: window.innerWidth,
