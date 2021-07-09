@@ -44,3 +44,13 @@
 - Built basic layout for Canvas page and sidebar, along with placeholders for mapping the SVG files and categories.
 - Added a "More" functionality to expand categories if needed.
 - Installed React Konva, tried quite a bit to make SVG files work with it but couldn't quite grasp the documentation for Konva's Path...
+
+### Day 4
+
+- After a LOT of testing stuff, finally figured out the way to get the right data from each SVG file. I had to make an axios request to the file's src property, which gave me the entire data of the file.
+- Was able to parse the data from each SVG file but couldn't store the value returned, as I was struggling with async function returning pending promises. Tried a loooot of things.
+
+### Day 5
+
+- Kept trying things to get the parsed data, until eventually learned that the best way to capture the value returned from the parse function was to do it inside useEffect and set it to the state of the component.
+- The next thing I believe I should do is, despite only working with 3 files I could easily import, is to find an scalable way to import any number of files and put them in an array.
