@@ -49,8 +49,17 @@
 
 - After a LOT of testing stuff, finally figured out the way to get the right data from each SVG file. I had to make an axios request to the file's src property, which gave me the entire data of the file.
 - Was able to parse the data from each SVG file but couldn't store the value returned, as I was struggling with async function returning pending promises. Tried a loooot of things.
+- UPDATE: After talking with Guille, I will let go of any login functionality. The only thing related that I will build is data persistance after refreshing the page.
 
 ### Day 5
 
 - Kept trying things to get the parsed data, until eventually learned that the best way to capture the value returned from the parse function was to do it inside useEffect and set it to the state of the component.
-- The next thing I believe I should do is, despite only working with 3 files I could easily import, is to find an scalable way to import any number of files and put them in an array.
+- The next thing I believe I should do is, despite only working with 3 files I could easily import, is to find an scalable way to import any number of files and put them in an array. I'm aware this is not how an application would actually run, since those files would be pulled from a DB and not stored locally, but I'd like to at least test if I can make it work :-)
+- UPDATE: After testing a few things and thinking more about it, I realized that this would be unnecessary and very much outside of the project scope, so just imported the 3 files/modules and put them in an array in the component. Everything is working well so far.
+
+### Day 6
+
+- Troubleshooting and learning to use React Konva and render SVGs by mapping the file's attributes after parsing them. The file now renders fine in the canvas! I also was able to allow dragging the file around in the canvas.
+
+### Day 7
+
