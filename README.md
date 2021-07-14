@@ -63,3 +63,10 @@
 
 ### Day 7
 
+- Built a quick conditional rendering process to filter svg files by categories, whether by clicking on the category icon, or by searching on the search bar. The search filters in real time depending on whether the category includes the substring being searched.
+- Learned and implemented the dragging property, and was able to get pretty close to dragging and dropping between React components. The way it's working is that when I start dragging the data of the file is now on the parent "Dashboard" component, and gets sent down to the canvas child component. My idea is that if the onDrop event is fired, then I'd trigger the request of the file data and allow it to render, but haven't been able to make it work yet.
+
+### Day 8
+
+- Success! Files are now rendered after dropping them on the canvas! The next thing is to learn how to manipulate the svg files with Konva.
+

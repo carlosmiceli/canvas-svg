@@ -5,47 +5,54 @@ import Svg1 from '../../images/svg1.svg'
 import Svg2 from '../../images/svg2.svg'
 import Svg3 from '../../images/svg3.svg'
 
-export default function Svgs() {
-    // const [svgs, setSvgs] = useState([Svg1, Svg2, Svg3])
+export default function Svgs(props) {
 
-    // useEffect(() => {
-        // let svgData = [svgs]
-        // if (svgData[0] === undefined || svgData.length > svgs.lenght) {
-        //     svgData.shift()
-        // }
-        // svgFiles.forEach(svg => {
-        //     axios.get(svg.src)
-        //     .then(res => parse(res.data))
-        //     .then(data => {
-        //         svgData.push(data)
-        //     })
-        // })
-        // setSvgs(svgData)
-    // }, [])
+    const startDragging = (ev) => {
+        let dragData = ev.target.src.replace("http://localhost:3000", "");
+        props.setBeginDraggingSvg(dragData)
+    }
 
     return (
         <div className={styles.svgList}>
+            {"outdoors".includes(props.category) || !props.category
+            ?
             <div className={styles.svg}>
-                <Image 
-                    src={Svg1} 
-                    alt="svg1"
-                    category="Outdoors"
-                />
+            <Image 
+                onDragStart={startDragging}
+                draggable
+                src={Svg1} 
+                alt="svg1"
+            />
             </div>
+            :
+            null
+            }
+            {"people".includes(props.category) || !props.category
+            ?
             <div className={styles.svg}>
-                <Image 
-                    src={Svg2} 
-                    alt="svg2"
-                    category="People"
-                />
+            <Image 
+                onDragStart={startDragging}
+                draggable
+                src={Svg2} 
+                alt="svg2"
+            />
             </div>
+            :
+            null
+            }
+            {"animals".includes(props.category) || !props.category
+            ?
             <div className={styles.svg}>
-                <Image 
-                    src={Svg3} 
-                    alt="svg3"
-                    category="Animals"
-                />
+            <Image 
+                onDragStart={startDragging}
+                draggable
+                src={Svg3} 
+                alt="svg3"
+            />
             </div>
+            :
+            null
+            }
         </div>
     )
 }

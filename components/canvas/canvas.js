@@ -1,28 +1,29 @@
-import { Stage, Layer, Path } from 'react-konva';
-import { useState, useEffect } from 'react';
+import { Stage, Layer, Path, Transformer } from 'react-konva';
+import { useState } from 'react';
 import axios from 'axios'
 import { parse } from 'svgson'
-import Svg1 from '../../images/svg1.svg'
 import styles from '../../styles/Canvas.module.css'
 
 
-export default function CanvasComponent() {
+export default function CanvasComponent(props) {
     const [svg, setSvg] = useState(null)
+    const [activateDrop, setActivateDrop] = useState(false)
 
-    useEffect(() => {
-        // let svgData = [svgs]
-        // if (svgData[0] === undefined || svgData.length > svgs.lenght) {
-        //     svgData.shift()
-        // }
-        // svgFiles.forEach(svg => {
-            axios.get(Svg1.src)
-            .then(res => parse(res.data))
-            .then(data => {
-                setSvg(data)
-            })
-        // })
-        // setSvgs(svgData)
-    }, [])
+    const handleDragOver = (e) => {
+        e.preventDefault()
+    }
+
+    const handleDrop = () => {
+        setActivateDrop(true)
+        axios.get(props.svgFile)
+        .then(res => parse(res.data))
+        .then(data => {
+            setSvg(data)
+        })
+    }
+
+    
+
     // const generateShapes = () => {
         //     return [...Array(10)].map((_, i) => ({
         //         id: i.toString(),
@@ -42,10 +43,13 @@ export default function CanvasComponent() {
         //   };
 
     return (
-        <div className={styles.canvas}>
+        <div className={styles.canvas} onDragOver={handleDragOver} onDrop={handleDrop}>
+            {activateDrop && svg
+                    ?
             <Stage height={500} width={500} draggable>       
                 <Layer>
-                    {svg && svg.children.map(s => {
+                    {
+                    svg.children.map(s => {
                         return(
                             <Path 
                                 data={s.attributes.d}
@@ -55,9 +59,13 @@ export default function CanvasComponent() {
                                 key={Math.random()}
                             />                    
                         )
-                    })}
+                        })
+                    }
                 </Layer>
-            </Stage>
+            </Stage>  
+            :
+            null
+            }     
         </div>
     )
 }

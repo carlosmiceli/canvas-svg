@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styles from '../styles/Canvas.module.css'
 import Categories from '../components/categories/categories'
 import Svgs from '../components/svgs/svgs'
@@ -6,7 +7,12 @@ import SearchIcon from '@material-ui/icons/Search';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
 
-export default function Sidebar() {
+export default function Sidebar(props) {
+    const [clickedCategory, setClickedCategory] = useState("")
+
+    const handleSearch = (e) => {
+        setClickedCategory(e.target.value)
+    }    
 
     return (
         <div className={styles.sidebar}>
@@ -16,6 +22,7 @@ export default function Sidebar() {
             <div className={styles.searchSidebar}>
                 <TextField
                 label="Search"
+                onChange={handleSearch}
                 placeholder="Tree, dog, house..."
                 InputProps={{
                     endAdornment: (
@@ -29,8 +36,8 @@ export default function Sidebar() {
                 />
             </div>
             <div className={styles.svgContainer}>
-                <Categories />
-                <Svgs/>
+                <Categories setClickedCategory={setClickedCategory} />
+                <Svgs category={clickedCategory} setBeginDraggingSvg={props.setBeginDraggingSvg}/>
             </div>
         </div>
     )

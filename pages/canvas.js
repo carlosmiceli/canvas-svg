@@ -5,17 +5,13 @@ import dynamic from 'next/dynamic';
 const CanvasComponent = dynamic(() => import('../components/canvas/canvas'), { ssr: false });
 
 export default function Canvas() {
-    const [sidebar, setSidebar] = useState(true)
-
-    const handleViewSidebar = () => {
-        setSidebar(!sidebar)
-    }
+    const [beginDraggingSvg, setBeginDraggingSvg] = useState({})
 
     return (
         <div className={styles.container}>
-            <Sidebar isOpen={sidebar} />
+            <Sidebar setBeginDraggingSvg={setBeginDraggingSvg} />
             <div className={styles.canvasBox}>
-                <CanvasComponent/>
+                <CanvasComponent svgFile={beginDraggingSvg} />
             </div>
         </div>
     );

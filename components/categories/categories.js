@@ -3,36 +3,36 @@ import styles from '../../styles/Canvas.module.css'
 import {People, Pets, Home, WbSunny, EmojiEvents, BeachAccess, SportsSoccer, MoreHoriz} from '@material-ui/icons/';
 
 
-export default function Categories() {
+export default function Categories(props) {
     const [expand, setExpand] = useState(true)
 
     const categories = [
         {
-            name: "People",
+            name: "people",
             icon: (<People/>)
         },
         {
-            name: "Animals",
+            name: "animals",
             icon: (<Pets/>)
         },
         {
-            name: "Indoors",
+            name: "indoors",
             icon: (<Home/>)
         },
         {
-            name: "Outdoors",
+            name: "outdoors",
             icon: (<WbSunny/>)
         },
         {
-            name: "Events",
+            name: "events",
             icon: (<EmojiEvents/>)
         },
         {
-            name: "Holidays",
+            name: "holidays",
             icon: (<BeachAccess/>)
         },
         {
-            name: "Sports",
+            name: "sports",
             icon: (<SportsSoccer/>)
         }
     ]
@@ -44,11 +44,13 @@ export default function Categories() {
         setExpand(!expand)
     }
 
+    
+
     return (
         <div className={styles.categories}>
             {shortCategories.map(cat => {
                 return (
-                    <div key={cat.name} className={styles.singleCat}>
+                    <div onClick={() => props.setClickedCategory(cat.name)} key={cat.name} className={styles.singleCat}>
                         {cat.icon}
                         <h3>{cat.name}</h3>
                     </div>
@@ -63,7 +65,7 @@ export default function Categories() {
             :
             categories.slice(5).map(cat => {
                 return (
-                    <div key={cat.name} className={styles.singleCat}>
+                    <div onClick={() => props.setClickedCategory(cat.name)} key={cat.name} className={styles.singleCat}>
                         {cat.icon}
                         <h3>{cat.name}</h3>
                     </div>
