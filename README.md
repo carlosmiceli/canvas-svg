@@ -69,4 +69,12 @@
 ### Day 8
 
 - Success! Files are now rendered after dropping them on the canvas! The next thing is to learn how to manipulate the svg files with Konva.
+- Spent a loooooot of time trying to figure out how to attach the svg as a node of the Transformer component of Konva. Had to learn about the Group element of Konva, so all paths are grouped together and the transformer can modify the full image. But finally pulled it off!
+- Wasn't able to reset the svg after the initial transformation if I continued dropping files, so that's left for the next day.
+
+### Day 9
+
+- Finally able to reset the transformation of a file after dropping new images on the canvas!
+- Figured out how to persist dragged svg with localstorage. Only the original file for now, working now on capturing the edited values with the transformer.
+- Figured out how to persist changes to the svg file. Next thing is to be able to reset those values on localstorage without breaking when a new svg is dragged onto the canvas.
 
