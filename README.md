@@ -78,3 +78,8 @@
 - Figured out how to persist dragged svg with localstorage. Only the original file for now, working now on capturing the edited values with the transformer.
 - Figured out how to persist changes to the svg file. Next thing is to be able to reset those values on localstorage without breaking when a new svg is dragged onto the canvas.
 
+### Day 10
+
+- After testing quite a bit, was able to reset the values after dropping a new svg file, while still persisting the changes if the work was done on the same image.
+- Learned and implemented how to download the image with the edits done!
+- Project complete!
