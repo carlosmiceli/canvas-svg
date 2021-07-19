@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { parse } from "svgson";
 import styles from "../../styles/Canvas.module.css";
+import { Button } from "@material-ui/core/";
 
 export default function CanvasComponent(props) {
   const [svg, setSvg] = useState(null);
@@ -30,9 +31,9 @@ export default function CanvasComponent(props) {
       setSvg(oldSvg);
       setActivateDrop(true);
     }
-    let newSvgValues = JSON.parse(localStorage.getItem("new-svg-values"));
-    if (newSvgValues) {
-      setSvgValues(newSvgValues);
+    let oldSvgValues = JSON.parse(localStorage.getItem("new-svg-values"));
+    if (oldSvgValues) {
+      setSvgValues(oldSvgValues);
     }
   }, [svg]);
 
@@ -56,6 +57,8 @@ export default function CanvasComponent(props) {
     setIsSelected(false);
     if (svg) {
       setSvg(null);
+      setSvgValues(null);
+      localStorage.removeItem("new-svg-values");
     }
     if (!activateDrop) {
       setActivateDrop(true);
@@ -66,7 +69,6 @@ export default function CanvasComponent(props) {
       .then(data => {
         setSvg(data);
       });
-    handleTransform();
   };
 
   const checkDeselect = e => {
@@ -83,6 +85,14 @@ export default function CanvasComponent(props) {
       onDrop={handleDrop}
       ref={stageCanvasRef}
     >
+      <Button download variant="contained" color="primary">
+        <a
+          href={svgRef.current ? svgRef.current.toDataURL() : undefined}
+          download
+        >
+          Download Image
+        </a>
+      </Button>
       <Stage
         height={stageHeight}
         width={stageWidth}
@@ -97,11 +107,11 @@ export default function CanvasComponent(props) {
               onDragEnd={handleTransform}
               onDragMove={handleTransform}
               onTransformEnd={handleTransform}
-              x={svgValues.x}
-              y={svgValues.y}
-              rotation={svgValues.rotation}
-              scaleX={svgValues.scaleX}
-              scaleY={svgValues.scaleY}
+              x={svgValues ? svgValues.x : undefined}
+              y={svgValues ? svgValues.y : undefined}
+              rotation={svgValues ? svgValues.rotation : undefined}
+              scaleX={svgValues ? svgValues.scaleX : undefined}
+              scaleY={svgValues ? svgValues.scaleY : undefined}
             >
               {svg.children.map(s => {
                 return (
