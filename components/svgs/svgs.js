@@ -1,9 +1,9 @@
 // import { useState, useEffect, useRef } from 'react';
 import Image from "next/image";
 import styles from "../../styles/Canvas.module.css";
-import Svg1 from "../../images/svg1.svg";
-import Svg2 from "../../images/svg2.svg";
-import Svg3 from "../../images/svg3.svg";
+import Svg1 from "../../images/svg1";
+import Svg2 from "../../images/svg2";
+import Svg3 from "../../images/svg3";
 
 export default function Svgs(props) {
   const startDragging = ev => {
