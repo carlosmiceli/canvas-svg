@@ -1,6 +1,6 @@
-# Canvas Challenge for Carlos Miceli
+# Canvas Project by Carlos Miceli
 
-### Day 1 (Saturday)
+### Day 1
 
 - I figured the first thing I needed to do was to read carefully and digest the Challenge instructions and new tech/tools/code I needed to get familiar with, which turned into this list:
     - SVG code
@@ -32,7 +32,7 @@
 - Added aMaterial UI to style the app.
 - Started building Login/Signup form.
 
-### Day 2 (Sunday)
+### Day 2
 
 - Built signup/login page with conditional rendering (will add functionality later).
 - Started building canvas layout.
@@ -49,7 +49,7 @@
 
 - After a LOT of testing stuff, finally figured out the way to get the right data from each SVG file. I had to make an axios request to the file's src property, which gave me the entire data of the file.
 - Was able to parse the data from each SVG file but couldn't store the value returned, as I was struggling with async function returning pending promises. Tried a loooot of things.
-- UPDATE: After talking with Guille, I will let go of any login functionality. The only thing related that I will build is data persistance after refreshing the page.
+- UPDATE: I will let go of any login functionality. The only thing related that I will build is data persistance after refreshing the page.
 
 ### Day 5
 
@@ -83,3 +83,43 @@
 - After testing quite a bit, was able to reset the values after dropping a new svg file, while still persisting the changes if the work was done on the same image.
 - Learned and implemented how to download the image with the edits done!
 - Project complete!
+
+---
+
+## Stage 2: UX/UI improvements
+
+### Day 1
+
+- The goal now is to improve the application from a UX/UI and aesthetic perspective.
+- The list of ideas that I'll attempt to improve/fix includes:
+    - ~~Add "All" category button.~~
+    - ~~Move sidebar from pages into components~~
+    - ~~Remove login page/url (send straight to canvas)~~
+    - ~~Same size for svgs on sidebar~~
+    - ~~Fix search if no input~~
+    - ~~Delete single SVGs from canvas with backspace~~
+    - Fix scroll
+    - Fixed height-width of canvas
+    - Close/Open sidebar
+    - Create component of svg layer/group/path
+    - Move download image button below, add padding, ask confirmation to download
+    - Fix props of paths of svg (Ask for help)
+    - Fix size of images after dropping them (fully visible)
+    - Map dropping multiple SVGs and Remove reset by dropping new svg
+    - Refactor code to add/remove classes for effects when searching/filtering svgs (fadein and fadeout) on sidebar
+    - Store multiple svgs and edits in local storage
+    - Change colors with color wheel of svgs fill
+    - Add text drag/edit
+    - Ctrl + C/V to copy/paste same SVG
+    - Effects when clicking/dropping
+    - Add/Copy/Delete multiple canvas
+    - Scroll down to see multiple canvas
+    - Write down "known issues"
+
+- Added "All" category.
+- Fixed moving sidebar into components.
+- Fixed login page so it goes straight into canvas.
+- Fixed same size for svgs on sidebar.
+- Fixed search if no input and added "no results" rendering.
+- Implemented deleting single SVGs from canvas with backspace.
+- Tried mapping all svg props but some not showing for some reason...
