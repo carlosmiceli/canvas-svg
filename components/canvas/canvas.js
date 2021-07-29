@@ -3,20 +3,28 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { parse } from "svgson";
 import styles from "../../styles/Canvas.module.css";
-import { Button } from "@material-ui/core/";
+import SystemUpdateAltIcon from "@material-ui/icons/SystemUpdateAlt";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 export default function CanvasComponent(props) {
-  const [svg, setSvg] = useState(null);
-  const [activateDrop, setActivateDrop] = useState(false);
   const [stageHeight, setStageHeight] = useState(null);
   const [stageWidth, setStageWidth] = useState(null);
-  const [isSelected, setIsSelected] = useState(false);
-  const [svgValues, setSvgValues] = useState(null);
+  const [isSelected, setIsSelected] = useState(null);
   const [localStorageSvg, setLocalStorageSvg] = useState(false);
-  // const [svgList, setSvgList] = useState([])
+  const [pathColor, setPathColor] = useState({
+    pathId: null,
+    pathIndex: null,
+    color: null,
+  });
+  const [svgList, setSvgList] = useState([]);
+  const [deleteSvg, setDeleteSvg] = useState(false);
+  const [copySvg, setCopySvg] = useState(false);
+  const [tempSvg, setTempSvg] = useState(null);
 
   const stageCanvasRef = useRef(null);
-  const svgRef = useRef(null);
+  const stageRef = useRef(null);
+  const svgRefs = useRef([]);
+  const colorRef = useRef(null);
   const transformerRef = useRef(null);
 
   useEffect(() => {
@@ -25,146 +33,259 @@ export default function CanvasComponent(props) {
   }, []);
 
   useEffect(() => {
-    if (svg) {
-      localStorage.setItem("svg-file", JSON.stringify(svg));
+    if (svgList.length > 0) {
+      localStorage.setItem("svglist", JSON.stringify(svgList));
     }
-    let oldSvg = JSON.parse(localStorage.getItem("svg-file"));
-    if (oldSvg && !svg && !localStorageSvg) {
-      console.log(oldSvg);
-      setSvg(oldSvg);
-      setActivateDrop(true);
+    if (localStorageSvg && svgList.length === 0) {
+      localStorage.removeItem("svglist");
+    }
+    let oldCanvas = JSON.parse(localStorage.getItem("svglist"));
+    if (oldCanvas && svgList.length === 0 && !localStorageSvg) {
+      setSvgList(oldCanvas);
       setLocalStorageSvg(true);
     }
-    let oldSvgValues = JSON.parse(localStorage.getItem("new-svg-values"));
-    if (oldSvgValues) {
-      setSvgValues(oldSvgValues);
-    }
-  }, [svg, localStorageSvg]);
+  }, [svgList, localStorageSvg]);
 
-  const handleTransform = () => {
-    let newSvgValues = {
-      x: svgRef.current.attrs.x,
-      y: svgRef.current.attrs.y,
-      scaleX: svgRef.current.attrs.scaleX,
-      scaleY: svgRef.current.attrs.scaleY,
-      rotation: svgRef.current.attrs.rotation,
+  useEffect(() => {
+    svgRefs.current = svgRefs.current.slice(0, svgList.length);
+  }, [svgList]);
+
+  const handleDrag = i => {
+    let reorderSvgsIndex = svgList;
+    let pushedSvg = svgList[i];
+    reorderSvgsIndex.splice(i, 1);
+    reorderSvgsIndex.push(pushedSvg);
+    setSvgList(reorderSvgsIndex);
+    localStorage.setItem("svglist", JSON.stringify(svgList));
+  };
+
+  const handleTransform = i => {
+    let transformValues = {
+      x: svgRefs.current[i].attrs.x,
+      y: svgRefs.current[i].attrs.y,
+      scaleX: svgRefs.current[i].attrs.scaleX,
+      scaleY: svgRefs.current[i].attrs.scaleY,
+      rotation: svgRefs.current[i].attrs.rotation,
     };
-    setSvgValues(newSvgValues);
-    localStorage.setItem("new-svg-values", JSON.stringify(newSvgValues));
+    let updatedSvgs = svgList;
+    updatedSvgs[i] = { ...svgList[i], ...transformValues };
+    setSvgList(updatedSvgs);
+    localStorage.setItem("svglist", JSON.stringify(svgList));
   };
 
   const handleDragOver = e => {
     e.preventDefault();
   };
 
-  const handleDrop = () => {
-    setIsSelected(false);
-    if (svg) {
-      setSvg(null);
-      setSvgValues(null);
-      localStorage.removeItem("new-svg-values");
-    }
-    if (!activateDrop) {
-      setActivateDrop(true);
-    }
+  const handleDrop = e => {
+    let dropCoordinates = {
+      x: e.nativeEvent.layerX,
+      y: e.nativeEvent.layerY,
+    };
     axios
       .get(props.svgFile)
       .then(res => parse(res.data))
       .then(data => {
-        setSvg(data);
+        setSvgList([...svgList, { ...data, ...dropCoordinates }]);
       });
+    setIsSelected(null);
+  };
+
+  const selectSvg = index => {
+    if (isSelected !== index) {
+      setIsSelected(index);
+    }
   };
 
   const checkDeselect = e => {
     const clickedOnEmpty = e.target === e.target.getStage();
     if (clickedOnEmpty) {
-      setIsSelected(false);
-      window.removeEventListener("keydown", function (e) {
-        handleDelete(e);
-      });
+      setIsSelected(null);
+      setDeleteSvg(false);
     }
   };
 
-  const handleDelete = () => {
-    setSvg(null);
-    setSvgValues(null);
-    setIsSelected(false);
-    localStorage.removeItem("svg-file");
-    localStorage.removeItem("new-svg-values");
+  const getPathColor = (pathId, pathIndex, color) => {
+    setPathColor({
+      pathId,
+      pathIndex,
+      color,
+    });
+    if (color === "none") colorRef.current.value = "#000000";
+    else colorRef.current.value = color.substring(0, color.length - 2);
   };
 
-  if (isSelected) {
-    window.addEventListener("keydown", function (e) {
-      if (e.key === "Backspace") {
-        handleDelete();
-      }
-    });
-  }
+  const changePathColor = e => {
+    let updatedSvgs = svgList;
+    updatedSvgs[isSelected].children[pathColor.pathIndex].attributes.fill =
+      e.target.value;
+    setSvgList(updatedSvgs);
+    localStorage.setItem("svglist", JSON.stringify(svgList));
+    setPathColor({ ...pathColor, color: e.target.value });
+  };
 
-  if (!isSelected) {
-    window.removeEventListener("keydown", function (e) {
-      handleDelete(e);
-    });
-  }
+  const deleteSvgBackspace = () => {
+    setDeleteSvg(true);
+    setTimeout(() => {
+      setDeleteSvg(false);
+    }, 10);
+  };
+
+  window.addEventListener("keydown", e => {
+    if (e.key === "Backspace") {
+      deleteSvgBackspace();
+    }
+    if (e.key === 17 || e.key === "Meta") {
+      setCopySvg(true);
+    }
+    if (copySvg && e.key === "c") {
+      setTempSvg(svgList[isSelected]);
+    }
+    if (copySvg && tempSvg && e.key === "v") {
+      setSvgList([...svgList, tempSvg]);
+    }
+  });
+
+  window.addEventListener("keyup", e => {
+    if (e.key === 17 || e.key === "Meta") {
+      setCopySvg(false);
+    }
+  });
+
+  useEffect(() => {
+    if (deleteSvg && isSelected !== null) {
+      let filteredSvgs = svgList;
+      filteredSvgs.splice(isSelected, 1);
+      setSvgList(filteredSvgs);
+      localStorage.setItem("svglist", JSON.stringify(svgList));
+      setIsSelected(null);
+    }
+  }, [deleteSvg, isSelected, svgList]);
+
+  const handleDownload = e => {
+    if (svgList.length > 0) {
+      if (!confirm("Do you want to download this canvas?")) {
+        e.preventDefault();
+      }
+    } else {
+      e.preventDefault();
+      alert("Nothing to download!");
+    }
+  };
+
+  const handleDeleteAll = e => {
+    if (svgList.length > 0) {
+      if (!confirm("Do you want to delete this canvas?")) {
+        e.preventDefault();
+      }
+    } else {
+      e.preventDefault();
+      alert("Nothing to delete!");
+    }
+  };
 
   return (
-    <div
-      className={styles.canvas}
-      onDragOver={handleDragOver}
-      onDrop={handleDrop}
-      ref={stageCanvasRef}
-    >
-      <Button download variant="contained" color="primary">
+    <div className={styles.canvasBox}>
+      <div className={styles.canvasIconSection}>
+        <input ref={colorRef} type="color" onChange={changePathColor} />
         <a
-          href={svgRef.current ? svgRef.current.toDataURL() : undefined}
+          onClick={handleDownload}
+          href={stageRef.current ? stageRef.current.toDataURL() : undefined}
           download
         >
-          Download Image
+          <SystemUpdateAltIcon
+            className={styles.canvasIcon}
+            variant="contained"
+            fontSize="small"
+          />
         </a>
-      </Button>
-      <Stage
-        height={stageHeight}
-        width={stageWidth}
-        onMouseDown={checkDeselect}
+        <DeleteIcon
+          className={styles.canvasIcon}
+          variant="contained"
+          fontSize="small"
+          onClick={handleDeleteAll}
+        />
+      </div>
+      <div
+        className={styles.canvasEditor}
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+        ref={stageCanvasRef}
       >
-        <Layer>
-          {activateDrop && svg ? (
-            <Group
-              ref={svgRef}
-              onClick={() => setIsSelected(true)}
-              draggable
-              onDragEnd={handleTransform}
-              onDragMove={handleTransform}
-              onTransformEnd={handleTransform}
-              x={svgValues ? svgValues.x : undefined}
-              y={svgValues ? svgValues.y : undefined}
-              rotation={svgValues ? svgValues.rotation : undefined}
-              scaleX={svgValues ? svgValues.scaleX : undefined}
-              scaleY={svgValues ? svgValues.scaleY : undefined}
-            >
-              {svg.children.map(s => {
-                return (
-                  <Path
-                    data={s.attributes.d}
-                    stroke={s.attributes.stroke}
-                    strokeWidth={Number(s.attributes["stroke-width"]) || 0}
-                    fill={s.attributes.fill}
-                    opacity={Number(s.attributes.opacity) || 0}
-                    lineCap={s.attributes["stroke-linecap"]}
-                    lineJoin={s.attributes["stroke-linejoin"]}
-                    miterLimit={s.attributes["stroke-miterlimit"]}
-                    id={s.attributes["data-ds-id"]}
-                    key={s.attributes["data-ds-id"]}
-                  />
-                );
-              })}
-            </Group>
-          ) : null}
-          {activateDrop && svg && isSelected && svgRef.current ? (
-            <Transformer ref={transformerRef} nodes={[svgRef.current]} />
-          ) : null}
-        </Layer>
-      </Stage>
+        <Stage
+          height={stageHeight}
+          width={stageWidth}
+          onMouseDown={checkDeselect}
+          ref={stageHeight && stageWidth ? stageRef : null}
+        >
+          <Layer>
+            {svgList
+              ? svgList.map((svg, index) => {
+                  return (
+                    <Group
+                      key={index}
+                      ref={el => (svgRefs.current[index] = el)}
+                      onClick={() => {
+                        selectSvg(index);
+                      }}
+                      draggable
+                      onDragEnd={() => {
+                        handleTransform(index);
+                      }}
+                      onDragStart={e => {
+                        e.target.moveToTop();
+                      }}
+                      onTransformEnd={() => {
+                        handleTransform(index);
+                      }}
+                      x={svg.x || 50}
+                      y={svg.y || 50}
+                      rotation={svg.rotation || undefined}
+                      scaleX={svg.scaleX || 0.5}
+                      scaleY={svg.scaleY || 0.5}
+                    >
+                      {svg.children.map((path, index) => {
+                        return (
+                          <Path
+                            data={path.attributes.d}
+                            stroke={path.attributes.stroke}
+                            strokeWidth={
+                              Number(path.attributes["stroke-width"]) || 0
+                            }
+                            fill={
+                              pathColor.pathId === path.attributes["data-ds-id"]
+                                ? pathColor.color
+                                : path.attributes.fill
+                            }
+                            opacity={Number(path.attributes.opacity) || 0}
+                            lineCap={path.attributes["stroke-linecap"]}
+                            lineJoin={path.attributes["stroke-linejoin"]}
+                            miterLimit={path.attributes["stroke-miterlimit"]}
+                            id={path.attributes["data-ds-id"]}
+                            key={path.attributes["data-ds-id"]}
+                            onClick={() => {
+                              getPathColor(
+                                path.attributes["data-ds-id"],
+                                index,
+                                path.attributes.fill
+                              );
+                            }}
+                          />
+                        );
+                      })}
+                    </Group>
+                  );
+                })
+              : null}
+            {svgRefs.current[isSelected] ? (
+              <Transformer
+                ref={transformerRef}
+                nodes={[svgRefs.current[isSelected]]}
+              />
+            ) : null}
+          </Layer>
+        </Stage>
+      </div>
     </div>
   );
 }

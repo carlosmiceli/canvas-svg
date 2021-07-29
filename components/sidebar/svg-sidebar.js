@@ -8,17 +8,33 @@ import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
 export default function Sidebar(props) {
   const [clickedCategory, setClickedCategory] = useState("");
+  const [sidebarVisibility, setSidebarVisibility] = useState(true);
 
   const handleSearch = e => {
     setClickedCategory(e.target.value);
   };
 
+  const handleSidebarVisibility = () => {
+    setSidebarVisibility(!sidebarVisibility);
+  };
+
   return (
-    <div className={styles.sidebar}>
-      <div className={styles.arrowSidebar}>
-        <ArrowBackIosIcon />
+    <div className={sidebarVisibility ? styles.sidebar : styles.sidebarClose}>
+      <div className={styles.arrowSidebarDiv}>
+        <ArrowBackIosIcon
+          className={
+            sidebarVisibility
+              ? styles.arrowSidebarOpen
+              : styles.arrowSidebarClose
+          }
+          onClick={handleSidebarVisibility}
+        />
       </div>
-      <div className={styles.searchSidebar}>
+      <div
+        className={`${styles.searchSidebar} ${
+          sidebarVisibility ? "" : styles.hidden
+        }`}
+      >
         <TextField
           label="Search"
           onChange={handleSearch}
@@ -34,7 +50,11 @@ export default function Sidebar(props) {
           }}
         />
       </div>
-      <div className={styles.svgContainer}>
+      <div
+        className={`${styles.svgContainer} ${
+          sidebarVisibility ? "" : styles.hidden
+        }`}
+      >
         <Categories setClickedCategory={setClickedCategory} />
         <Svgs
           category={clickedCategory}
@@ -44,17 +64,3 @@ export default function Sidebar(props) {
     </div>
   );
 }
-
-// var SideBar = React.createClass({
-//     render: function() {
-//       var sidebarClass = this.props.isOpen ? 'sidebar open' : 'sidebar';
-//       return (
-//         <div className={sidebarClass}>
-//           <div>I slide into view</div>
-//                   <div>Me too!</div>
-//           <div>Meee Threeeee!</div>
-//           <button onClick={this.props.toggleSidebar} className="sidebar-toggle">Toggle Sidebar</button>
-//           </div>
-//       );
-//     }
-//   });

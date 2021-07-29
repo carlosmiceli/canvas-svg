@@ -18,9 +18,7 @@ export default function Canvas() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Sidebar setBeginDraggingSvg={setBeginDraggingSvg} />
-      <div className={styles.canvasBox}>
-        <CanvasComponent svgFile={beginDraggingSvg} />
-      </div>
+      <CanvasComponent svgFile={beginDraggingSvg} />
     </div>
   );
 }

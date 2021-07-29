@@ -69,7 +69,7 @@ export default function Categories(props) {
             className={styles.singleCat}
           >
             {cat.icon}
-            <h3>{cat.name}</h3>
+            <h3>{cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}</h3>
           </div>
         );
       })}
@@ -87,7 +87,7 @@ export default function Categories(props) {
               className={styles.singleCat}
             >
               {cat.icon}
-              <h3>{cat.name}</h3>
+              <h3>{cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}</h3>
             </div>
           );
         })

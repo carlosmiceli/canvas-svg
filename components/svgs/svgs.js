@@ -17,21 +17,21 @@ export default function Svgs(props) {
       {"outdoors".includes(props.category) ||
       !props.category ||
       props.category === "all" ? (
-        <div className={styles.svg}>
+        <div className={styles.svgImageContainer}>
           <Image onDragStart={startDragging} draggable src={Svg1} alt="svg1" />
         </div>
       ) : null}
       {"people".includes(props.category) ||
       !props.category ||
       props.category === "all" ? (
-        <div className={styles.svg}>
+        <div className={styles.svgImageContainer}>
           <Image onDragStart={startDragging} draggable src={Svg2} alt="svg2" />
         </div>
       ) : null}
       {"animals".includes(props.category) ||
       !props.category ||
       props.category === "all" ? (
-        <div className={styles.svg}>
+        <div className={styles.svgImageContainer}>
           <Image onDragStart={startDragging} draggable src={Svg3} alt="svg3" />
         </div>
       ) : null}
