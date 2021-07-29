@@ -88,7 +88,7 @@
 
 ## Stage 2: UX/UI improvements
 
-### Day 1
+### Day 1 (Preparation)
 
 - The goal now is to improve the application from a UX/UI and aesthetic perspective.
 - The list of ideas that I'll attempt to improve/fix includes:
@@ -98,23 +98,24 @@
     - ~~Same size for svgs on sidebar~~
     - ~~Fix search if no input~~
     - ~~Delete single SVGs from canvas with backspace~~
-    - Fix scroll
-    - Fixed height-width of canvas
-    - Close/Open sidebar
-    - Create component of svg layer/group/path
-    - Move download image button below, add padding, ask confirmation to download
-    - Fix props of paths of svg (Ask for help)
-    - Fix size of images after dropping them (fully visible)
-    - Map dropping multiple SVGs and Remove reset by dropping new svg
-    - Refactor code to add/remove classes for effects when searching/filtering svgs (fadein and fadeout) on sidebar
-    - Store multiple svgs and edits in local storage
-    - Change colors with color wheel of svgs fill
-    - Add text drag/edit
-    - Ctrl + C/V to copy/paste same SVG
-    - Effects when clicking/dropping
-    - Add/Copy/Delete multiple canvas
-    - Scroll down to see multiple canvas
-    - Write down "known issues"
+    - ~~Fix scroll~~
+    - ~~Fixed height-width of canvas~~
+    - ~~Close/Open sidebar~~
+    - ~~Move download image button below.~~
+    - ~~Add padding, ask confirmation to download~~
+    - ~~Fix size of images after dropping them (fully visible)~~
+    - ~~Change colors with color wheel of svgs fill~~
+    - ~~Remove reset by dropping new svg~~
+    - ~~Map dropping multiple SVGs~~
+    - ~~Fix coordinates of dropping svgs~~
+    - ~~Store multiple svgs and edits in local storage~~
+    - ~~Ctrl + C/V to copy/paste same SVG with same edits~~
+    - ~~Store color changes in local storage and state~~
+    - ~~Reset all canvas button~~
+    - ~~Change zIndex of images~~
+
+
+### Day 1
 
 - Added "All" category.
 - Fixed moving sidebar into components.
@@ -122,4 +123,47 @@
 - Fixed same size for svgs on sidebar.
 - Fixed search if no input and added "no results" rendering.
 - Implemented deleting single SVGs from canvas with backspace.
-- Tried mapping all svg props but some not showing for some reason...
+
+### Day 2
+
+- Fixed scroll in sidebar.
+- Fixed height and width of canvas.
+- Fixed categories uppercases.
+- Fixed spacing and styling of categories.
+- Added borders to the sidebar.
+- Added pointer cursors.
+- Implemented opening/closing sidebar.
+- Fixed style for Error search.
+- Improved design and layout of buttons in the Canvas.
+- Added confirmation to download after clicking the button.
+- Fixed scale and x/y attributes of image when dropping on the canvas (hardcoded values to work with example images).
+
+### Day 3
+
+- Implemented input for user to change colors of svg sections.
+
+### Day 4
+
+- Can drop multiple svgs, and also repeat the same svg.
+- Can resize, rotate, etc. multiple svgs separately.
+- Improved coordinates after dropping svgs.
+- Fixed deleting any of the multiple svgs with backspace shortcut.
+- Fixed coordinates being applied from one svg to many.
+- Fixed multiplying svgs when transforming a single svg.
+- Implemented storing multiple svgs and edits in localstorage.
+- Implemented ctrl + c/v to copy/paste identical svgs.
+
+### Day 5
+
+-  Fixed download with multiple conditions.
+-  Implemented being able to change colors and storing the changes in state and localstorage.
+-  Added margins and border styling to the canvas editor.
+-  Implemented "Delete All" button.
+-  Implemented changing zIndex with dragging, but only in state, not localstorage.
+
+## Issues
+
+- Mapped all svg props but some not showing for some reason...
+- Definitely could refactor code to make it shorter and less repetitive, but rushed to prioritize functionality in time.
+- Performance! If I start doing many things, or want to do them quickly, like changing colors fast or copy/pasting many times, it starts to slow down and maybe even crash.
+- Couldn't crack the code to persist zIndex positioning in localstorage... I tried to do it all "the React way" according to Konva's documentation, but it was simply not working (rendering before dragging), no matter how much I copied the documentation's code exactly. Eventually I resorted to the moveToTop() function, which is not ideal in React according to the documentation.
