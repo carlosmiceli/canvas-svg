@@ -175,11 +175,11 @@ export default function CanvasComponent(props) {
 
   const handleDeleteAll = e => {
     if (svgList.length > 0) {
-      if (!confirm("Do you want to delete this canvas?")) {
-        e.preventDefault();
+      if (confirm("Do you want to delete this canvas?")) {
+        setSvgList([]);
+        localStorage.removeItem("svglist");
       }
     } else {
-      e.preventDefault();
       alert("Nothing to delete!");
     }
   };
