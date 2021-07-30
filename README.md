@@ -167,6 +167,6 @@
 - Definitely could refactor code to make it shorter and less repetitive, but rushed to prioritize functionality in time.
 - Performance! If I start doing many things, or want to do them quickly, like changing colors fast or copy/pasting many times, it starts to slow down and maybe even crash.
 - Couldn't crack the code to persist zIndex positioning in localstorage... I tried to do it all "the React way" according to Konva's documentation, but it was simply not working (rendering before dragging), no matter how much I copied the documentation's code exactly. Eventually I resorted to the moveToTop() function, which is not ideal in React according to the documentation.
-- - Download doesn't work if I just refresh and it pulls the data from localstorage and I don't make any edits.
+- Download doesn't work if I just refresh and it pulls the data from localstorage and I don't make any edits.
 - If I copy and paste an image, and then I change a color, it changes it to all the copies of that image (realized this too late!).
 - There are issues with responsiveness, changing the screen size once canvas is loaded, etc., since I didn't have time to prioritize that part of the code.
